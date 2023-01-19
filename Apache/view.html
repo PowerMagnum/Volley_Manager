@@ -1,0 +1,100 @@
+    <script src="web_sock.js"></script>
+
+    <div class="container">
+        <div class="row top-limit" id="Headers">
+          <div class="col A left-limit right-limit">
+            <p class="display1 text-center">Locali</p>
+          </div>
+          <div class="col B right-limit">
+            <p class="display1 text-center">Ospiti</p>
+          </div>
+        </div>
+        <div class="row" id="Names">
+          <div class="col A left-limit">
+            <p class="h3 text-center">Set</p>
+          </div>
+          <div class="col A right-limit">
+            <p class="h3 text-center">Punti</p>
+          </div>
+          <div class="col B">
+            <p class="h3 text-center">Punti</p>
+          </div>
+          <div class="col B right-limit">
+            <p class="h3 text-center">Set</p>
+          </div>
+        </div>
+        <div class="row d-flex align-items-center justify-content-center" id="Upper">
+          <div class="col A left-limit">
+            <button type="button" class="btn btn-block btn-warning" onclick="update('Set1',1)">▲</button>
+          </div>
+          <div class="col A right-limit">
+            <button type="button" class="btn btn-block btn-warning" onclick="update('Punti1',1)">▲</button>
+          </div>
+          <div class="col B">
+           <button type="button" class="btn btn-block btn-warning" onclick="update('Punti2',1)">▲</button>
+          </div>
+          <div class="col B right-limit">
+           <button type="button" class="btn btn-block btn-warning" onclick="update('Set2',1)">▲</button>
+          </div>
+        </div>
+        <div class="row" id="Values">
+          <div class="col A left-limit">
+            <p class="h1 text-center" id="Set1">0</p>
+          </div>
+          <div class="col A right-limit">
+            <p class="h1 text-center" id="Punti1">0</p>
+          </div>
+          <div class="col B">
+            <p class="h1 text-center" id="Punti2">0</p>
+          </div>
+          <div class="col B right-limit">
+            <p class="h1 text-center" id="Set2">0</p>
+          </div>
+        </div>
+        <div class="row bottom-limit" id="Lower">
+          <div class="col A pb-3 left-limit">
+            <button type="button" class="btn btn-block btn-warning" onclick="update('Set1',-1)">▼</button>
+          </div>
+          <div class="col A pb-3 right-limit">
+           <button type="button" class="btn btn-block btn-warning" onclick="update('Punti1',-1)">▼</button>
+          </div>
+          <div class="col B pb-3">
+           <button type="button" class="btn btn-block btn-warning" onclick="update('Punti2',-1)">▼</button>
+          </div>
+          <div class="col B pb-3 right-limit">
+           <button type="button" class="btn btn-block btn-warning" onclick="update('Set2',-1)">▼</button>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col d-flex align-items-center justify-content-center">
+            <button type="button" class="btn btn-lg btn-warning mt-5" onclick="reset()">Reset Punti</button>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-4 d-flex align-items-center justify-content-center">
+            <button type="button" class="btn btn-lg btn-success mt-5" id="MFineSet" onclick="toggle('FineSet',true)">Mostra Fine Set</button>
+            <button type="button" class="btn btn-lg btn-danger mt-5" style="display: none;" id="NFineSet" onclick="toggle('FineSet',false)">Nascondi Fine Set</button>
+          </div>
+          <div class="col-4 d-flex align-items-center justify-content-center">
+            <button type="button" class="btn btn-lg btn-success mt-5" id="MTimeout" onclick="toggle('Timeout',true)">Mostra Timeout</button>
+            <button type="button" class="btn btn-lg btn-danger mt-5" style="display: none;" id="NTimeout" onclick="toggle('Timeout',false)">Nascondi Timeout</button>
+          </div>
+          <div class="col-4 d-flex align-items-center justify-content-center">
+            <button type="button" class="btn btn-lg btn-success mt-5" id="MMatchpoint" onclick="toggle('Matchpoint',true)">Mostra Matchpoint</button>
+            <button type="button" class="btn btn-lg btn-danger mt-5" style="display: none;" id="NMatchpoint" onclick="toggle('Matchpoint',false)">Nascondi Matchpoint</button>
+          </div>
+        </div>
+        <!--
+        <div class="row">
+          <div class="col-4 d-flex align-items-center justify-content-center">
+            
+          </div>
+          <div class="col-4 d-flex align-items-center justify-content-center">
+            
+          </div>
+          <div class="col-4 d-flex align-items-center justify-content-center">
+            
+          </div>
+        </div>
+        -->
+      </div>

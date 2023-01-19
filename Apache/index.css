@@ -1,0 +1,110 @@
+/* The Modal (background) */
+.modal {
+    display: block; /* Hidden by default */
+    position: fixed; /* Stay in place */
+    z-index: 20; /* Sit on top */
+    left: 0;
+    top: 0;
+    width: 100%; /* Full width */
+    height: 100%; /* Full height */
+    overflow: auto; /* Enable scroll if needed */
+    background-color: rgb(0,0,0); /* Fallback color */
+    background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+    padding-top: 60px;
+    font-family: Arial, Helvetica, sans-serif;
+  }
+  
+  /* Modal Content/Box */
+  .modal-content {
+    background-color: #fefefe;
+    margin: 5% auto auto auto; /* 5% from the top, 15% from the bottom and centered */
+    border: 1px solid #888;
+    width: 60%; /* Could be more or less, depending on screen size */
+  }
+  
+  /* Add Zoom Animation */
+  .animate {
+    -webkit-animation: animatezoom 0.6s;
+    animation: animatezoom 0.6s
+  }
+  
+  @-webkit-keyframes animatezoom {
+    from {-webkit-transform: scale(0)}
+    to {-webkit-transform: scale(1)}
+  }
+  
+  @keyframes animatezoom {
+    from {transform: scale(0)}
+    to {transform: scale(1)}
+  }
+  
+  /*####################################*/
+  
+  @media screen and (max-width: 850px) {
+    .h1{
+      font-size: 5vh;
+    }
+    .h3{
+      font-size: 3vh;
+    }
+  }
+  @media screen and (min-width: 850px) {
+    .h1{
+      font-size: 10vh;
+    }
+    .h3{
+      font-size: 3vh;
+    }
+    .display1{
+      font-size: 4vh;
+    }
+    }
+  
+    @media screen and (max-width: 390px) {
+      .h1{
+        font-size: 1.5vh;
+      }
+      }
+.A {
+ background-color: coral; 
+}
+.B {
+  background-color:cornflowerblue;
+ }
+
+#Upper{
+  cursor: pointer;
+}
+#Lower{
+  cursor: pointer;
+}
+
+div{
+  border: 0px;
+}
+
+.top-limit{
+  border-top: 7px;
+  border-style: solid;
+}
+
+.bottom-limit{
+  border-bottom: 5px;
+  border-style: solid;
+}
+
+.left-limit{
+  border-left: 5px;
+  border-style: solid;
+}
+
+.right-limit{
+  border-right: 5px;
+  border-style: solid;
+}
+
+body{
+  background-image: url("background.jpg");
+  background-repeat: no-repeat;
+  background-size: cover;
+}
