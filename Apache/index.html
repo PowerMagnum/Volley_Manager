@@ -32,6 +32,11 @@
         $("#ip").val(getCookie("IP"));
         $("#code").val(getCookie("CODE"));
         document.getElementById('id01').style.display='block';
+        document.onkeydown = function (e) {
+          if(e.code == 'Enter'){
+            connect();
+          }
+        }
     });
   </script>
 </body>
