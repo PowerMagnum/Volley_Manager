@@ -1,32 +1,4 @@
-'''
-import asyncio
-import websockets
-
-psw = input("Inserisci Password: ")
-
-async def echo(websocket, path):
-    await websocket.send("[C]")
-    async for message in websocket:
-        await websocket.send(message)
-
-asyncio.get_event_loop().run_until_complete(
-    websockets.serve(echo, 'localhost', 8765))
-asyncio.get_event_loop().run_forever()
-'''
-'''
-import asyncio
-from websockets import connect
-
-psw = input("Inserisci Password: ")
-
-async def hello(uri):
-    async with connect(uri) as websocket:
-        await websocket.send("[C]")
-        await websocket.recv()
-
-asyncio.run(hello("ws://localhost:8765"))
-'''
-
+#!./venv/Scripts/python.exe
 
 import asyncio
 from hashlib import sha256
