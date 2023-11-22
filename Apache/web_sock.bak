@@ -10,18 +10,14 @@
     var id_item = {};
     var item_id = {};
     var now_showed = 0;
-    var OBS_message;
     
     const FullGoal = 25;
     const HalfGoal = 15;
     var Goal = FullGoal;
-    var tb_check = null;
-    
+    var G_shift = 0;
     var AP_LogStyle = "color:#00FF00;";
-    var OBS_LogStyle = "color:#00FFFF;";
-    var PY_LogStyle = "color:#FFFF00";
-    var Show_STATE = "";
-
+    var AP_AntiSpam = "";
+    var AP_AntiSpam_Goal = "";
     var AP_Enable = true;
     var lastWinner = 0;
 
@@ -30,15 +26,15 @@
         let py_sock = new WebSocket("ws://" + ip + ":8765"); 
 
         socket.onopen = function(e) {
-            console.log("%c[OBS] Connection established",OBS_LogStyle);
+            console.log("[OBS] Connection established");
         };
 
         socket.onmessage = function(event) {
-            //var test = "{`[OBS] Data received from server:`: 0}";
-            //console.log(JSON.parse(event.data));
+            console.log(`[OBS] Data received from server:`);
+            console.log(JSON.parse(event.data));
             if (JSON.parse(event.data)['op'] == 0 ){
-                console.log({"[OBS] Connection Data:": JSON.parse(event.data)});
                 var autentica = "";
+
                 if(JSON.parse(event.data)['d'].hasOwnProperty('authentication')){
                     var challenge = JSON.parse(event.data)['d']['authentication']['challenge'];
                     var salt = JSON.parse(event.data)['d']['authentication']['salt'];
@@ -56,27 +52,26 @@
                     socket.send(JSON.stringify(auth));
                 }
             }else if(JSON.parse(event.data)['op'] == 2 ){
-                console.log({"[OBS] Authenting Data:": JSON.parse(event.data)});
-                console.log("%c-#-#-[ SERVER OBS PRONTO AL FUNZIONAMENTO ]-#-#-",OBS_LogStyle);
+                console.log("-#-#-[ SERVER OBS PRONTO AL FUNZIONAMENTO ]-#-#-");
                 getItem();
             }else if(JSON.parse(event.data)['op'] == 7 ){
+                //console.log(JSON.parse(event.data)['d']['responseData']);
                 if(JSON.parse(event.data)['d']['requestType'] == "GetSceneItemList"){
-                    console.log({"[OBS] Get Items List:": JSON.parse(event.data)});
                     items = JSON.parse(event.data)['d']['responseData']['sceneItems'];
                     //console.log("Gransuca",items);
                     for(i in items){
                         if(items[i]['sourceName'] == 'AvvisoMatchPoint'){
-                            console.log("Matchpoint OBS ID:",items[i]['sceneItemId']);
+                            console.log("Matchpoint:",items[i]['sceneItemId']);
                             item_id[items[i]['sceneItemId']] = "Matchpoint";
                             id_item['Matchpoint'] = items[i]['sceneItemId'];
                         }
                         if(items[i]['sourceName'] == 'AvvisoFineSet'){
-                            console.log("FineSet OBS ID:",items[i]['sceneItemId']);
+                            console.log("FineSet:",items[i]['sceneItemId']);
                             item_id[items[i]['sceneItemId']] = "FineSet";                            
                             id_item['FineSet'] = items[i]['sceneItemId'];
                         }
                         if(items[i]['sourceName'] == 'AvvisoTimeOut'){
-                            console.log("Timeout OBS ID:",items[i]['sceneItemId']);
+                            console.log("Timeout:",items[i]['sceneItemId']);
                             item_id[items[i]['sceneItemId']] = "Timeout";
                             id_item['Timeout'] = items[i]['sceneItemId'];
                         }
@@ -84,7 +79,6 @@
                     getVisibility();
                     //setInterval(getVisibility(),7);
                 }else if(JSON.parse(event.data)['d']['requestType'] == "GetSceneItemEnabled"){
-                    console.log({"[OBS] Get Item Visibility:": JSON.parse(event.data)});
                     data = JSON.parse(event.data)['d'];
                     if((data['responseData']['sceneItemEnabled'])){
                         $("#M"+item_id[data['requestId']]).hide();
@@ -93,34 +87,33 @@
                         $("#N"+item_id[data['requestId']]).hide();
                         $("#M"+item_id[data['requestId']]).show();
                     }
-                }else if(JSON.parse(event.data)['d']['requestType'] == "SetSceneItemEnabled"){
-                    console.log({"[OBS] Set Item Visibility ACK:": JSON.parse(event.data)});
                 }
             }
         };
 
         socket.onclose = function(event) {
             if (event.wasClean) {
-                console.log(`%c[OBS] Connection closed cleanly, code=${event.code} reason=${event.reason}`,OBS_LogStyle);
+                console.log(`[OBS] Connection closed cleanly, code=${event.code} reason=${event.reason}`);
             } else {
                 // e.g. server process killed or network down
                 // event.code is usually 1006 in this case
-                console.log('%c[OBS] Connection died',OBS_LogStyle);
+                console.log('[OBS] Connection died');
                 alert("La connessione a OBS è terminata");
             }
         };
 
         socket.onerror = function(error) {
-            console.log(`%c[OBS error]`,OBS_LogStyle);
+            console.log(`[OBS error]`);
             alert("Errore server OBS... ");
         }; 
 
         py_sock.onopen = function(e) {
-            console.log("%c[Python] Py Connection established",PY_LogStyle); 
+            console.log("[Python] Py Connection established"); 
         };
 
         py_sock.onmessage = function(event) {
-            console.log({"[Python] Data received from  Py server:": JSON.parse(event.data)});
+            console.log(`[Python] Data received from  Py server:`);
+            console.log(JSON.parse(event.data));
             if(JSON.parse(event.data)["code"] == "[C]"){
                 var py_salt = JSON.parse(event.data)["val"];
                 hash(psw + py_salt).then(function(value){
@@ -131,10 +124,10 @@
                 });
             }else if(JSON.parse(event.data)["code"] == "[A]"){
                 if(JSON.parse(event.data)["val"] == "OK"){
-                    console.log("%c-#-#-[ SERVER PYTHON PRONTO AL FUNZIONAMENTO ]-#-#-",PY_LogStyle);
+                    console.log("-#-#-[ SERVER PYTHON PRONTO AL FUNZIONAMENTO ]-#-#-");
                     setInterval(file_read(),5);
                 }else{
-                    console.log("%c-!-!-[ IL SERVER PYTHON HA RIFIUTATO LA CONNESSIONE]-!-!-",PY_LogStyle);
+                    console.log("-!-!-[ IL SERVER PYTHON HA RIFIUTATO LA CONNESSIONE]-!-!-");
                 }
             }else if(JSON.parse(event.data)["code"] == "[Read]"){
                 $("#Punti1").html(JSON.parse(event.data)["val"][0]);
@@ -147,79 +140,72 @@
 
         py_sock.onclose = function(event) {
             if (event.wasClean) {
-                console.log(`%c[Python] Py Connection closed cleanly, code=${event.code} reason=${event.reason}`,PY_LogStyle);
+                console.log(`[Python] Py Connection closed cleanly, code=${event.code} reason=${event.reason}`);
             } else {
                 // e.g. server process killed or network down
                 // event.code is usually 1006 in this case
-                console.log('%c[Python] Py Connection died',PY_LogStyle);
+                console.log('[Python] Py Connection died');
                 alert("La connessione a Python è terminata");
             }
         };
 
         py_sock.onerror = function(error) {
-            console.log(`%c[Python error]`,PY_LogStyle);
+            console.log(`[Python error]`);
             alert("Errore server Python... ");
         }; 
 
-        function RunAutoPilot(reset = false, tieBreak = true, aggiornaPunti = true){
+        function RunAutoPilot(reset = false){
             if(! AP_Enable) return;
-            
-            if(reset && lastWinner){
+
+            if((lastWinner > 0) && reset && (AP_AntiSpam != "RST")){
                 update("Set"+lastWinner , 1);
                 console.log("%c[AutoPilot]: Aumentato numero Set squadra "+lastWinner, AP_LogStyle);
                 lastWinner = 0;
+                AP_AntiSpam = "RST";
             }
-
-            if(tieBreak){
-                tb_check = ((parseInt($("#Set1").html(), 10) + parseInt($("#Set2").html(), 10)) < 4)? FullGoal : HalfGoal;
-                if(tb_check != Goal){
-                    Goal = tb_check;
-                    $("#goal").val("Goal: "+Goal);
-                    console.log("%c[AutoPilot]: Cambio Goal Tie Break ("+Goal+")", AP_LogStyle);
-                }
-            }
-
-            if(aggiornaPunti){
-                let P1 = parseInt($("#Punti1").html(), 10);
-                let P2 = parseInt($("#Punti2").html(), 10);
-                let P_max = Math.max(P1, P2);
-                let P_min = Math.min(P1, P2);
-
-                if((P_max >= Goal) && (P_max - P_min >= 2)){
-                    //Win
-                    if (Show_STATE == "FineSet") return;
-                    lastWinner = (P1 > P2)? 1 : 2;
-                    console.log("%c[AutoPilot]: Mostro FineSet",AP_LogStyle);
-                    console.log("%c[AutoPilot]: La squadra "+lastWinner+" vince il set",AP_LogStyle);
+            let P1 = parseInt($("#Punti1").html(), 10);
+            let P2 = parseInt($("#Punti2").html(), 10);
+            let P_max = Math.max(P1, P2);
+            let P_min = Math.min(P1, P2);
+            console.log("#### Pre: "+AP_AntiSpam);
+            if(P_max >= Goal - 1){
+                if((P_max == P_min) && (P_max >= Goal + G_shift - 2)){
+                    toggle("Matchpoint",false);
+                    G_shift++;
+                    console.log("%c[AutoPilot]: Nascondo Matchpoint (Nuovo Goal a "+(Goal + G_shift)+")",AP_LogStyle);
+                }else if((P_max == (Goal + G_shift) - 1) && (P_max > P_min) && (AP_AntiSpam != "MMP")){
+                    toggle("Matchpoint",true);
+                    console.log("%c[AutoPilot]: Mostro Matchpoint",AP_LogStyle);
+                    AP_AntiSpam = "MMP";
+                }else if((P_max == (Goal + G_shift)) && (AP_AntiSpam != "WIN")){
                     toggle("FineSet", true);
-                    $("#goal").val("Goal: "+P_max);
-                    Show_STATE = "FineSet";
-                }else if((P_max >= Goal - 1) && (P_max - P_min >= 1)){
-                    //Matchpoint
-                    if (Show_STATE == "Matchpoint") return;
-                    console.log("%c[AutoPilot]: Mostro SetPoint",AP_LogStyle);
-                    toggle("Matchpoint", true);
-                    $("#goal").val("Goal: "+(P_max + 1));
-                    Show_STATE = "Matchpoint";
-                }else if((P_max >= Goal - 1) && (P_max == P_min)){
-                    //Pair
-                    if (Show_STATE == "None") return;
-                    console.log("%c[AutoPilot]: Aggiornamento Goal",AP_LogStyle);
-                    console.log("%c[AutoPilot]: Nascondo FineSet e SetPoint",AP_LogStyle);
-                    toggle("FineSet", false);
-                    toggle("Matchpoint", false);
-                    $("#goal").val("Goal: "+(P_max + 2));
-                    Show_STATE = "None";
-                }else if ((Show_STATE != "None")){
-                    //none
-                    console.log("%c[AutoPilot]: Reset Goal",AP_LogStyle);
-                    console.log("%c[AutoPilot]: Nascondo FineSet e SetPoint",AP_LogStyle);
-                    toggle("FineSet", false);
-                    toggle("Matchpoint", false);
-                    $("#goal").val("Goal: "+Goal);
-                    Show_STATE = "None";
+                    lastWinner = (P1 > P2)? 1 : 2;
+                    console.log("%c[AutoPilot]: Mostro FineSet (Vince squadra: "+lastWinner+")",AP_LogStyle);
+                    (AP_AntiSpam != "WIN");
+                }else if((P_max < Goal + G_shift - 1)){
+                    G_shift--;
+                    console.log("%c[AutoPilot]: Rilevato abbassamento goal (Nuovo Goal a "+(Goal + G_shift)+")",AP_LogStyle);
                 }
+            }else if(AP_AntiSpam != "NORM"){
+                toggle("FineSet", false);
+                toggle("Matchpoint", false);
+                G_shift = 0;
+                console.log("%c[AutoPilot]: Nascondo Matchpoint",AP_LogStyle);
+                console.log("%c[AutoPilot]: Nascondo FineSet (Nuovo Goal a "+(Goal + G_shift)+")",AP_LogStyle);
+                AP_AntiSpam = "NORM";
             }
+            
+            if((parseInt($("#Set1").html(), 10) + parseInt($("#Set2").html(), 10) >= 4) && (AP_AntiSpam_Goal != "STB")){
+                Goal = HalfGoal;
+                console.log("%c[AutoPilot]: Tie Break (Nuovo Goal a "+(Goal + G_shift)+")",AP_LogStyle);
+                AP_AntiSpam_Goal = "STB";
+            }else if(AP_AntiSpam_Goal != "SNB"){
+                Goal = FullGoal;
+                AP_AntiSpam_Goal = "SNB";
+            }
+
+            $("#goal").val("Goal: "+(Goal+G_shift));
+            console.log("#### Post: "+AP_AntiSpam);
         }
 
         function file_read(){
@@ -233,22 +219,18 @@
         }
 
         function reset(){
-            let Flag_AP = (AP_Enable && lastWinner)? "\nAutoPilot aumenterà il numero di set della squadra "+lastWinner : "";
-            if(confirm("Sei sicuro di voler resettare i punti?" + Flag_AP)){
+            if(confirm("Sei sicuro di voler resettare i punti?")){
                 let command = {"code":"[Reset]"};
                 py_sock.send(JSON.stringify(command));
                 RunAutoPilot(true);
             }
         }
         
-        function toggle(name, value, rescanVis = true, scena = "Punteggio"){
-            if(value && now_showed != name){
-                toggle(now_showed, false, false);
+        function toggle(name, value, scena = "Punteggio"){
+            if(value && now_showed){
+                toggle(now_showed, false);
                 sleep(250);
-            }else if((!value && !now_showed) || (value && now_showed == name)){
-                return;
             }
-            
             let command = {
                 "op": 6,
                 "d": {
@@ -268,12 +250,8 @@
             $("#"+prefix_to_show+name).show();
             if(value){
                 now_showed = name;
-            }else if(now_showed == name){
-                now_showed = 0;
             }
-            if(rescanVis){
-                setTimeout(getVisibility, 3000);
-            }
+            setTimeout(getVisibility, 3000);
 
         }
 
@@ -351,3 +329,7 @@ $('#AP_Sw').change(function() {
         }
     }
 });
+
+function forceClose(){
+    socket.close();
+}

@@ -1,6 +1,13 @@
     <script src="web_sock.js"></script>
 
     <div class="container">
+        <div id="Option">
+            <div class="custom-control custom-switch AP" id="AP">
+              <input type="checkbox" class="custom-control-input" id="AP_Sw" checked>
+              <label class="custom-control-label" for="AP_Sw">AutoPilot</label>
+            </div>
+            <input id="goal" class="form-control" type="text" placeholder="--" readonly>
+        </div>
         <div class="row top-limit" id="Headers">
           <div class="col A left-limit right-limit">
             <p class="display1 text-center">Locali</p>
@@ -80,21 +87,8 @@
             <button type="button" class="btn btn-lg btn-danger mt-5" style="display: none;" id="NTimeout" onclick="toggle('Timeout',false)">Nascondi Timeout</button>
           </div>
           <div class="col-4 d-flex align-items-center justify-content-center">
-            <button type="button" class="btn btn-lg btn-success mt-5" id="MMatchpoint" onclick="toggle('Matchpoint',true)">Mostra Matchpoint</button>
-            <button type="button" class="btn btn-lg btn-danger mt-5" style="display: none;" id="NMatchpoint" onclick="toggle('Matchpoint',false)">Nascondi Matchpoint</button>
+            <button type="button" class="btn btn-lg btn-success mt-5" id="MMatchpoint" onclick="toggle('Matchpoint',true)">Mostra SetPoint</button>
+            <button type="button" class="btn btn-lg btn-danger mt-5" style="display: none;" id="NMatchpoint" onclick="toggle('Matchpoint',false)">Nascondi SetPoint</button>
           </div>
         </div>
-        <!--
-        <div class="row">
-          <div class="col-4 d-flex align-items-center justify-content-center">
-            
-          </div>
-          <div class="col-4 d-flex align-items-center justify-content-center">
-            
-          </div>
-          <div class="col-4 d-flex align-items-center justify-content-center">
-            
-          </div>
-        </div>
-        -->
       </div>

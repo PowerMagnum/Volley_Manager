@@ -65,10 +65,10 @@
         font-size: 1.5vh;
       }
       }
-.A {
+.B {
  background-color: coral; 
 }
-.B {
+.A {
   background-color:cornflowerblue;
  }
 
@@ -104,7 +104,53 @@ div{
 }
 
 body{
-  background-image: url("background.jpg");
+  background-image: url("background2.jpg");
   background-repeat: no-repeat;
   background-size: cover;
+  /*background-color: #858;*/
 }
+
+.custom-control-input:not(:checked) ~ .custom-control-label::before {
+  background-color: #FAF; /* Change the background color of the toggle when it is not checked */
+  border-color: white; /* Change the border color of the checkbox when it is not checked */
+  border-width: 3px;
+}
+
+.custom-control-input:checked ~ .custom-control-label::before {
+  background-color: #93B ; /* Change the color of the toggle when it is checked */
+  border-color: white; /* Change the border color of the toggle when it is checked */
+  border-width: 3px;
+}
+
+#Option{
+  position: absolute;
+  top: 20px;
+  right: 100px;
+  width: 50%;
+  height: 10%;
+}
+
+.AP{
+  position: absolute;
+  right: 220px;
+  font-weight: bold;
+  color: white;
+  top: 7px;
+}
+
+#goal{
+  width: 100px;
+  text-align: center;
+  position: absolute;
+  right: 100px;
+  background-color: #FAF;
+  border-color: black;
+  color: black;
+  font-size: 20px;
+}
+
+button{
+  color: black !important;
+  font-size: 30px !important;
+}
+

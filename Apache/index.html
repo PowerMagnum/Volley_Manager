@@ -1,4 +1,4 @@
-<html>
+<html translate="no">
  <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
@@ -9,6 +9,7 @@
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
   <title>Volley Manager</title>
   <script src="cookie.js"></script>
+  <meta name="google" content="notranslate">
  </head>
 
 
@@ -17,10 +18,14 @@
   <div id="id01" class="modal">
     <div class="modal-content animate">
       <div class="container" style=" padding: 16px;">
-        <label for="code"><b>IP</b></label>
+        <label for="ip"><b>IP</b></label>
         <input type="text" style="width: 100%; padding: 12px 20px; margin: 8px 0; display: inline-block; border: 1px solid #ccc; box-sizing: border-box;" placeholder="Inserisci indirizzo Ip" autocomplete="ip" id="ip" name="ip" required>
         <label for="code"><b>Codice</b></label>
-        <input type="text" style="width: 100%; padding: 12px 20px; margin: 8px 0; display: inline-block; border: 1px solid #ccc; box-sizing: border-box;" placeholder="Inserisci codice di accesso" autocomplete="code" id="code" name="code" required>
+        <input type="password" style="width: 100%; padding: 12px 20px; margin: 8px 0; display: inline-block; border: 1px solid #ccc; box-sizing: border-box;" placeholder="Inserisci codice di accesso" autocomplete="code" id="code" name="code" required>
+        <div class="form-check form-check-inline">
+          <input class="form-check-input" type="checkbox" id="showCode" onchange="toggleCode()">
+          <label class="form-check-label" for="showCode">Mostra Codice</label>
+        </div>        
         <button type="submit" onclick="connect()" style="background-color: #4CAF50; color: white; padding: 14px 20px; margin: 8px 0; border: none; cursor: pointer; width: 100%; " >Login</button>
       </div>
     </div>
@@ -46,6 +51,11 @@
     ip = $('#ip').val();
     $("#Body").load("view.html");
   }
+
+  function toggleCode(){
+    $("#code").attr("type", ($("#showCode").prop("checked"))? "text" : "password");
+  }
+
 </script>
 
 </html>
