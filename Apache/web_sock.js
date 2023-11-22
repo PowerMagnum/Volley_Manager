@@ -163,7 +163,7 @@
 
         function RunAutoPilot(reset = false, tieBreak = true, aggiornaPunti = true){
             if(! AP_Enable) return;
-            
+
             if(reset && lastWinner){
                 update("Set"+lastWinner , 1);
                 console.log("%c[AutoPilot]: Aumentato numero Set squadra "+lastWinner, AP_LogStyle);
@@ -174,11 +174,11 @@
                 tb_check = ((parseInt($("#Set1").html(), 10) + parseInt($("#Set2").html(), 10)) < 4)? FullGoal : HalfGoal;
                 if(tb_check != Goal){
                     Goal = tb_check;
-                    $("#goal").val("Goal: "+Goal);
                     console.log("%c[AutoPilot]: Cambio Goal Tie Break ("+Goal+")", AP_LogStyle);
                 }
             }
-
+            $("#goal").val("Goal: "+Goal);
+            
             if(aggiornaPunti){
                 let P1 = parseInt($("#Punti1").html(), 10);
                 let P2 = parseInt($("#Punti2").html(), 10);
