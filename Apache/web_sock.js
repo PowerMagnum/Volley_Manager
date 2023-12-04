@@ -132,7 +132,7 @@
             }else if(JSON.parse(event.data)["code"] == "[A]"){
                 if(JSON.parse(event.data)["val"] == "OK"){
                     console.log("%c-#-#-[ SERVER PYTHON PRONTO AL FUNZIONAMENTO ]-#-#-",PY_LogStyle);
-                    setInterval(file_read(),5);
+                    //setInterval(file_read(),5);
                 }else{
                     console.log("%c-!-!-[ IL SERVER PYTHON HA RIFIUTATO LA CONNESSIONE]-!-!-",PY_LogStyle);
                 }
@@ -142,6 +142,9 @@
                 $("#Set1").html(JSON.parse(event.data)["val"][2]);
                 $("#Set2").html(JSON.parse(event.data)["val"][3]);
                 RunAutoPilot();
+            }else if(JSON.parse(event.data)["code"] == "[ReadSquad]"){
+                $("#squadra1").val(JSON.parse(event.data)["val"][0]);
+                $("#squadra2").val(JSON.parse(event.data)["val"][1]);
             }
         };
 
@@ -310,13 +313,18 @@
         }
 
         async function hash(string) {
+            //Crypto non supporta http ed installare tls su ampps e' una camurria
+            /*
             const utf8 = new TextEncoder().encode(string);
+            //const hashBuffer = await crypto.subtle.digest('SHA-256', utf8);
             const hashBuffer = await crypto.subtle.digest('SHA-256', utf8);
             const hashArray = Array.from(new Uint8Array(hashBuffer));
             const hashHex = hashArray
             .map((bytes) => bytes.toString(16).padStart(2, '0'))
             .join('');
             return hashHex;
+            */
+           return sha256(string);
         }
 
         function hexToBase64(hexstring) {
@@ -329,12 +337,50 @@
             return new Promise(resolve => setTimeout(resolve, ms));
         }
 
+        function nameAssign(remote=true){
+            let sq1 = $("#squadra1").val();
+            let sq2 = $("#squadra2").val();
+            if (sq1 != "" && sq2 != ""){
+                setCookie("N1",sq1,75);
+                setCookie("N2",sq2,75);
+            }
+            let n1 = getCookie("N1");
+            let n2 = getCookie("N2");
+            if (sq1 == "" && sq2 == ""){
+                $("#squadra1").val(n1);
+                $("#squadra2").val(n2);
+            }
+            if(n1 != "") $("#name1").html(n1);
+            if(n2 != "") $("#name2").html(n2);
+            $('#editNames').modal("hide");
+
+            if (remote){
+                let command = {"code":"[SetSquad]", "val":{"squadra1":n1,"squadra2":n2}};
+                py_sock.send(JSON.stringify(command));
+            }
+        }
+
+        function safeModalClose(){
+            $("#squadra1").val("");
+            $("#squadra2").val("");
+            nameAssign();
+        }
+
+        function pullSquad(campo, progressivo){
+            let command = {"code":"[ReadSquad]"};
+            py_sock.send(JSON.stringify(command));
+        }
+
     }catch(e){
         alert("Qualcosa è andato storto... " + e);
     }
 //}
 
 $("p").addClass("user-select-none"); //Cursore
+
+$(".name").dblclick(function(){
+    $('#editNames').modal();
+});
 
 $('#AP_Sw').change(function() {
     if(this.checked) {
@@ -351,3 +397,14 @@ $('#AP_Sw').change(function() {
         }
     }
 });
+
+document.onkeydown = function (e) {
+    if(e.code == 'Enter'){
+        nameAssign();
+    }else if(e.code == "Escape"){
+        safeModalClose();
+    }
+
+}
+
+nameAssign(false);

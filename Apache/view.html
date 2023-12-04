@@ -1,94 +1,125 @@
-    <script src="web_sock.js"></script>
+<script src="web_sock.js"></script>
 
-    <div class="container">
-        <div id="Option">
-            <div class="custom-control custom-switch AP" id="AP">
-              <input type="checkbox" class="custom-control-input" id="AP_Sw" checked>
-              <label class="custom-control-label" for="AP_Sw">AutoPilot</label>
-            </div>
-            <input id="goal" class="form-control" type="text" placeholder="--" readonly>
-        </div>
-        <div class="row top-limit" id="Headers">
-          <div class="col A left-limit right-limit">
-            <p class="display1 text-center">Locali</p>
-          </div>
-          <div class="col B right-limit">
-            <p class="display1 text-center">Ospiti</p>
-          </div>
-        </div>
-        <div class="row" id="Names">
-          <div class="col A left-limit">
-            <p class="h3 text-center">Set</p>
-          </div>
-          <div class="col A right-limit">
-            <p class="h3 text-center">Punti</p>
-          </div>
-          <div class="col B">
-            <p class="h3 text-center">Punti</p>
-          </div>
-          <div class="col B right-limit">
-            <p class="h3 text-center">Set</p>
-          </div>
-        </div>
-        <div class="row d-flex align-items-center justify-content-center" id="Upper">
-          <div class="col A left-limit">
-            <button type="button" class="btn btn-block btn-warning" onclick="update('Set1',1)">▲</button>
-          </div>
-          <div class="col A right-limit">
-            <button type="button" class="btn btn-block btn-warning" onclick="update('Punti1',1)">▲</button>
-          </div>
-          <div class="col B">
-           <button type="button" class="btn btn-block btn-warning" onclick="update('Punti2',1)">▲</button>
-          </div>
-          <div class="col B right-limit">
-           <button type="button" class="btn btn-block btn-warning" onclick="update('Set2',1)">▲</button>
-          </div>
-        </div>
-        <div class="row" id="Values">
-          <div class="col A left-limit">
-            <p class="h1 text-center" id="Set1">0</p>
-          </div>
-          <div class="col A right-limit">
-            <p class="h1 text-center" id="Punti1">0</p>
-          </div>
-          <div class="col B">
-            <p class="h1 text-center" id="Punti2">0</p>
-          </div>
-          <div class="col B right-limit">
-            <p class="h1 text-center" id="Set2">0</p>
-          </div>
-        </div>
-        <div class="row bottom-limit" id="Lower">
-          <div class="col A pb-3 left-limit">
-            <button type="button" class="btn btn-block btn-warning" onclick="update('Set1',-1)">▼</button>
-          </div>
-          <div class="col A pb-3 right-limit">
-           <button type="button" class="btn btn-block btn-warning" onclick="update('Punti1',-1)">▼</button>
-          </div>
-          <div class="col B pb-3">
-           <button type="button" class="btn btn-block btn-warning" onclick="update('Punti2',-1)">▼</button>
-          </div>
-          <div class="col B pb-3 right-limit">
-           <button type="button" class="btn btn-block btn-warning" onclick="update('Set2',-1)">▼</button>
-          </div>
-        </div>
-        <div class="row">
-          <div class="col d-flex align-items-center justify-content-center">
-            <button type="button" class="btn btn-lg btn-warning mt-5" onclick="reset()">Reset Punti</button>
-          </div>
-        </div>
-        <div class="row">
-          <div class="col-4 d-flex align-items-center justify-content-center">
-            <button type="button" class="btn btn-lg btn-success mt-5" id="MFineSet" onclick="toggle('FineSet',true)">Mostra Fine Set</button>
-            <button type="button" class="btn btn-lg btn-danger mt-5" style="display: none;" id="NFineSet" onclick="toggle('FineSet',false)">Nascondi Fine Set</button>
-          </div>
-          <div class="col-4 d-flex align-items-center justify-content-center">
-            <button type="button" class="btn btn-lg btn-success mt-5" id="MTimeout" onclick="toggle('Timeout',true)">Mostra Timeout</button>
-            <button type="button" class="btn btn-lg btn-danger mt-5" style="display: none;" id="NTimeout" onclick="toggle('Timeout',false)">Nascondi Timeout</button>
-          </div>
-          <div class="col-4 d-flex align-items-center justify-content-center">
-            <button type="button" class="btn btn-lg btn-success mt-5" id="MMatchpoint" onclick="toggle('Matchpoint',true)">Mostra SetPoint</button>
-            <button type="button" class="btn btn-lg btn-danger mt-5" style="display: none;" id="NMatchpoint" onclick="toggle('Matchpoint',false)">Nascondi SetPoint</button>
-          </div>
-        </div>
+<div class="container">
+  <div id="Option">
+      <div class="custom-control custom-switch AP" id="AP">
+        <input type="checkbox" class="custom-control-input" id="AP_Sw" checked>
+        <label class="custom-control-label" for="AP_Sw">AutoPilot</label>
       </div>
+      <input id="goal" class="form-control" type="text" placeholder="--" readonly>
+  </div>
+  <div class="row top-limit" id="Headers">
+    <div class="col A left-limit right-limit">
+      <p class="display1 text-center name" id="name1">Locali</p>
+    </div>
+    <div class="col B right-limit">
+      <p class="display1 text-center name" id="name2">Ospiti</p>
+    </div>
+  </div>
+  <div class="row" id="Names">
+    <div class="col A left-limit">
+      <p class="h3 text-center">Set</p>
+    </div>
+    <div class="col A right-limit">
+      <p class="h3 text-center">Punti</p>
+    </div>
+    <div class="col B">
+      <p class="h3 text-center">Punti</p>
+    </div>
+    <div class="col B right-limit">
+      <p class="h3 text-center">Set</p>
+    </div>
+  </div>
+  <div class="row d-flex align-items-center justify-content-center" id="Upper">
+    <div class="col A left-limit">
+      <button type="button" class="btn btn-block btn-warning" onclick="update('Set1',1)">▲</button>
+    </div>
+    <div class="col A right-limit">
+      <button type="button" class="btn btn-block btn-warning" onclick="update('Punti1',1)">▲</button>
+    </div>
+    <div class="col B">
+      <button type="button" class="btn btn-block btn-warning" onclick="update('Punti2',1)">▲</button>
+    </div>
+    <div class="col B right-limit">
+      <button type="button" class="btn btn-block btn-warning" onclick="update('Set2',1)">▲</button>
+    </div>
+  </div>
+  <div class="row" id="Values">
+    <div class="col A left-limit">
+      <p class="h1 text-center" id="Set1">0</p>
+    </div>
+    <div class="col A right-limit">
+      <p class="h1 text-center" id="Punti1">0</p>
+    </div>
+    <div class="col B">
+      <p class="h1 text-center" id="Punti2">0</p>
+    </div>
+    <div class="col B right-limit">
+      <p class="h1 text-center" id="Set2">0</p>
+    </div>
+  </div>
+  <div class="row bottom-limit" id="Lower">
+    <div class="col A pb-3 left-limit">
+      <button type="button" class="btn btn-block btn-warning" onclick="update('Set1',-1)">▼</button>
+    </div>
+    <div class="col A pb-3 right-limit">
+      <button type="button" class="btn btn-block btn-warning" onclick="update('Punti1',-1)">▼</button>
+    </div>
+    <div class="col B pb-3">
+      <button type="button" class="btn btn-block btn-warning" onclick="update('Punti2',-1)">▼</button>
+    </div>
+    <div class="col B pb-3 right-limit">
+      <button type="button" class="btn btn-block btn-warning" onclick="update('Set2',-1)">▼</button>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col d-flex align-items-center justify-content-center">
+      <button type="button" class="btn btn-lg btn-warning mt-5" onclick="reset()">Reset Punti</button>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-4 d-flex align-items-center justify-content-center">
+      <button type="button" class="btn btn-lg btn-success mt-5" id="MFineSet" onclick="toggle('FineSet',true)">Mostra Fine Set</button>
+      <button type="button" class="btn btn-lg btn-danger mt-5" style="display: none;" id="NFineSet" onclick="toggle('FineSet',false)">Nascondi Fine Set</button>
+    </div>
+    <div class="col-4 d-flex align-items-center justify-content-center">
+      <button type="button" class="btn btn-lg btn-success mt-5" id="MTimeout" onclick="toggle('Timeout',true)">Mostra Timeout</button>
+      <button type="button" class="btn btn-lg btn-danger mt-5" style="display: none;" id="NTimeout" onclick="toggle('Timeout',false)">Nascondi Timeout</button>
+    </div>
+    <div class="col-4 d-flex align-items-center justify-content-center">
+      <button type="button" class="btn btn-lg btn-success mt-5" id="MMatchpoint" onclick="toggle('Matchpoint',true)">Mostra SetPoint</button>
+      <button type="button" class="btn btn-lg btn-danger mt-5" style="display: none;" id="NMatchpoint" onclick="toggle('Matchpoint',false)">Nascondi SetPoint</button>
+    </div>
+  </div>
+</div>
+
+<div id="editNames" class="modal" data-backdrop="static">
+  <div class="modal-content animate">
+      <div class="container" style="padding: 16px;">
+          <div class="form-row">
+              <div class="form-group col-md-6">
+                  <label for="squadra1">Squadra1:</label>
+                  <input type="text" class="form-control" id="squadra1" placeholder="Inserisci nome Squadra1" autocomplete="off" required>
+              </div>
+
+              <div class="form-group col-md-6">
+                  <label for="squadra2">Squadra2:</label>
+                  <input type="text" class="form-control" id="squadra2" placeholder="Inserisci nome Squadra2" autocomplete="off" required>
+              </div>
+          </div>
+          <div class="d-flex justify-content-between">
+              <button type="button" class="btn btn-success btn-sm" onclick="nameAssign()">Conferma</button>
+              <button type="button" class="btn btn-primary btn-sm" onclick="pullSquad()">Pull</button>
+              <button type="button" class="btn btn-danger btn-sm" onclick="safeModalClose()">Annulla</button>
+          </div>
+
+      </div>
+  </div>
+</div>
+
+
+
+
+
+
+

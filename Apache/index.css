@@ -1,8 +1,8 @@
 /* The Modal (background) */
 .modal {
-    display: block; /* Hidden by default */
+    /*display: block; /* Hidden by default (but showed by js) */
     position: fixed; /* Stay in place */
-    z-index: 20; /* Sit on top */
+    z-index: 1050; /* Sit on top */
     left: 0;
     top: 0;
     width: 100%; /* Full width */
@@ -19,7 +19,7 @@
     background-color: #fefefe;
     margin: 5% auto auto auto; /* 5% from the top, 15% from the bottom and centered */
     border: 1px solid #888;
-    width: 60%; /* Could be more or less, depending on screen size */
+    width: 60%;  /* Could be more or less, depending on screen size */
   }
   
   /* Add Zoom Animation */
@@ -76,6 +76,10 @@
   cursor: pointer;
 }
 #Lower{
+  cursor: pointer;
+}
+
+.name{
   cursor: pointer;
 }
 
@@ -154,3 +158,6 @@ button{
   font-size: 30px !important;
 }
 
+#editNames button{
+  font-size: 20px !important;
+}
