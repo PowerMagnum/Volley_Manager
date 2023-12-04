@@ -56,6 +56,14 @@ def initialize_file():
         with open("set2.txt", "w") as f:
             f.write("0")
             print("Generato s2")
+    if(not os.path.exists("squadra1.txt")):
+        with open("squadra1.txt", "w") as f:
+            f.write("0")
+            print("Generato squadra1")
+    if(not os.path.exists("squadra2.txt")):
+        with open("squadra2.txt", "w") as f:
+            f.write("0")
+            print("Generato squadra2")
 
 def read():
     res = []
@@ -82,6 +90,19 @@ def update(campo, progressivo):
             return
     with open(file[campo],"w") as f:
         f.write(str(val + progressivo))
+
+def readSquad():
+    with open("squadra1.txt", "r") as f:
+        sq1 = "".join(f.read())
+    with open("squadra2.txt", "r") as f:
+        sq2 = "".join(f.read())
+    return json.dumps({0 : sq1, 1 : sq2})
+
+def setSquad(sq1, sq2):
+    with open("squadra1.txt","w") as f:
+        f.write(sq1)
+    with open("squadra2.txt","w") as f:
+        f.write(sq2)
 
 def reset():
     file = {"Punti1":"punti1.txt", "Punti2":"punti2.txt", "Set1":"set1.txt", "Set2":"set2.txt"}
@@ -117,6 +138,12 @@ async def handler(websocket):
                 punti = read()
                 await websocket.send(f'{{"code":"[Read]","val":{punti}}}')
                 print("[SEND]:",f'{{"code":"[Read]","val":{punti}}}')
+            elif(data["code"] == "[ReadSquad]"):
+                squadre = readSquad()
+                await websocket.send(f'{{"code":"[ReadSquad]","val":{squadre}}}')
+                print("[SEND]:",f'{{"code":"[ReadSquad]","val":{squadre}}}')
+            elif(data["code"] == "[SetSquad]"):
+                setSquad(data["val"]["squadra1"], data["val"]["squadra2"])
 
             message = ""
             data = ""

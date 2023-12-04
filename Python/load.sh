@@ -1,0 +1,1 @@
+. ./linux/bin/activate && python punti_receiver.py
